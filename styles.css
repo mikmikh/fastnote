@@ -1,0 +1,164 @@
+:root {
+  --green: #33ff33;
+  --neon-green: #39ff14;
+  --amber: #ffb000;
+  --background-color: #050505;
+}
+
+* {
+  box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  /* overflow: hidden; */
+  background-color: var(--background-color);
+  color: var(--green)
+}
+
+textarea {
+  field-sizing: content;
+  resize: none; /* Prevents the user from breaking the layout by dragging */
+  overflow: hidden; /* Hides any accidental scrollbars */
+}
+
+.hide {
+  display: none;
+}
+
+/* block */
+.block {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* border: 1px solid blue; */
+}
+.block:hover {
+  border: 2px solid var(--amber);
+}
+/* block controls */
+.block__btns {
+  position: absolute;
+
+  /* visibility: hidden; */
+  display: none;
+}
+.block:hover:not(.selected) .block__btns {
+  /* visibility: visible; */
+  display: block;
+}
+.selected .block__btns,
+.selected .block__content {
+  display: none;
+}
+.btns_right {
+  top: 0;
+  right: 0;
+}
+.btns_top {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.btns_bottom {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.active.active {
+  border: 2px solid var(--amber);
+}
+
+img,
+canvas {
+  image-rendering: pixelated;
+}
+.canvas {
+  /* border: 1px solid var(--amber); */
+  image-rendering: pixelated;
+  /* min-width: 256px; */
+  width: 100%;
+}
+.palette > div {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--green)
+}
+.gallery {
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+}
+.gallery img {
+  border: 2px solid var(--green);
+  width: 32px;
+}
+
+.block__editor {
+  display: flex;
+  flex-direction: column;
+}
+
+.sprite-editor {
+  /* display: flex;
+  flex-direction: column; */
+}
+
+.block, .block__editor {
+  width: 100%;
+  /* padding: 0 8px; */
+  box-sizing: border-box;
+  background-color: var(--background-color);
+  color: var(--green); /* Use #ffb000 for Amber alert vibe */
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 15px;
+  line-height: 1.4;
+  border: 2px solid var(--green);
+  border-radius: 0px;
+  outline: none;
+  caret-color: var(--green);
+}
+
+.block button, button,input[type="file"]::file-selector-button {
+  /* Colors */
+  background-color: var(--background-color);
+  color: var(--green); /* Neon green */
+  border: 2px solid var(--green);
+  
+  /* Typography */
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  /* font-weight: bold; */
+  
+  /* Layout */
+  padding: 2px 4px;
+  cursor: pointer;
+  
+  /* Retro Effects */
+  border-radius: 0px; 
+  box-shadow: 0 0 5px var(--green), inset 0 0 5px var(--green);
+  text-shadow: 0 0 2px var(--green);
+  text-transform: uppercase;
+  transition: all 0.1s ease-in-out;
+}
+
+.main {
+  max-width: 420px;
+  padding: 1rem;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  /* padding: 1rem 0; */
+}
+
+header {
+  align-self: center;
+}
