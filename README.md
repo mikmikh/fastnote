@@ -1,0 +1,2 @@
+# fastnote
+micro note app
