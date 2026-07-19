@@ -40,6 +40,9 @@ export class JSpriteEditor {
     this.rootEl.appendChild(
       JElementBuilder.addButton("save", () => this.saveSprite()),
     );
+    this.rootEl.appendChild(
+      JElementBuilder.addButton("remove", () => this.removeSprite()),
+    );
   }
   saveSprite() {
     const { sprites, spriteIdx } = this.store.state;
@@ -53,6 +56,25 @@ export class JSpriteEditor {
     this.store.dispatch({
       type: ACTION_TYPES.SPRITES_UPDATE,
       payload: sprites.map((s, i) => (i === spriteIdx ? newSprite : s)),
+    });
+  }
+   removeSprite() {
+    const { sprites, spriteIdx } = this.store.state;
+    const sprite = sprites[spriteIdx];
+    if (!sprite) {
+      return;
+    }
+    const conf = confirm('Remove sprite?');
+    if (!conf) {
+      return;
+    }
+    this.store.dispatch({
+      type: ACTION_TYPES.SPRITE_SELECT,
+      payload: null,
+    });
+    this.store.dispatch({
+      type: ACTION_TYPES.SPRITES_UPDATE,
+      payload: sprites.filter(s => s !== sprite),
     });
   }
   setSprite(sprite) {

@@ -19,7 +19,7 @@ body {
   padding: 0;
   /* overflow: hidden; */
   background-color: var(--background-color);
-  color: var(--green)
+  color: var(--green);
 }
 
 textarea {
@@ -79,6 +79,7 @@ textarea {
 img,
 canvas {
   image-rendering: pixelated;
+  border: 1px solid var(--green);
 }
 .canvas {
   /* border: 1px solid var(--amber); */
@@ -89,16 +90,20 @@ canvas {
 .palette > div {
   width: 32px;
   height: 32px;
-  border: 1px solid var(--green)
+  border: 1px solid var(--green);
 }
 .gallery {
   display: flex;
   flex-direction: column;
+  
+}
+.gallery > div {
   overflow: auto;
+  max-height: 128px;
 }
 .gallery img {
   border: 2px solid var(--green);
-  width: 32px;
+  width: 64px;
 }
 
 .block__editor {
@@ -106,18 +111,18 @@ canvas {
   flex-direction: column;
 }
 
-.sprite-editor {
-  /* display: flex;
-  flex-direction: column; */
+.controls,.palette {
+  display: flex;
 }
 
-.block, .block__editor {
+.block,
+.block__editor {
   width: 100%;
   /* padding: 0 8px; */
   box-sizing: border-box;
   background-color: var(--background-color);
   color: var(--green); /* Use #ffb000 for Amber alert vibe */
-  font-family: 'Consolas', 'Courier New', monospace;
+  font-family: "Consolas", "Courier New", monospace;
   font-size: 15px;
   line-height: 1.4;
   border: 2px solid var(--green);
@@ -126,24 +131,28 @@ canvas {
   caret-color: var(--green);
 }
 
-.block button, button,input[type="file"]::file-selector-button {
+.block button,
+button,
+input[type="file"]::file-selector-button {
   /* Colors */
   background-color: var(--background-color);
   color: var(--green); /* Neon green */
   border: 2px solid var(--green);
-  
+
   /* Typography */
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-size: 16px;
   /* font-weight: bold; */
-  
+
   /* Layout */
   padding: 2px 4px;
   cursor: pointer;
-  
+
   /* Retro Effects */
-  border-radius: 0px; 
-  box-shadow: 0 0 5px var(--green), inset 0 0 5px var(--green);
+  border-radius: 0px;
+  box-shadow:
+    0 0 5px var(--green),
+    inset 0 0 5px var(--green);
   text-shadow: 0 0 2px var(--green);
   text-transform: uppercase;
   transition: all 0.1s ease-in-out;
@@ -157,8 +166,48 @@ canvas {
   flex-direction: column;
   gap: 0.5rem;
   /* padding: 1rem 0; */
+  min-height: 100vh;
+
 }
 
 header {
   align-self: center;
+}
+
+
+
+
+
+/* The container representing your screen */
+.crt-screen {
+  position: relative;
+  background-color: var(--background-color);;
+  color: var(--background-color);;
+  font-family: monospace;
+  padding: 20px;
+  overflow: hidden; /* Keeps the moving line within boundaries */
+}
+
+/* The moving scanline overlay */
+.crt-screen::after {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 255, 102, 0.01) 50%
+  ), 
+  linear-gradient(
+    90deg, 
+    rgba(255, 0, 0, 0.06), 
+    rgba(0, 255, 0, 0.02), 
+    rgba(0, 0, 255, 0.06)
+  );
+  z-index: 10;
+  background-size: 100% 4px, 6px 100%; /* Creates the grid grid texturing */
+  pointer-events: none; /* Allows user to click elements underneath */
 }

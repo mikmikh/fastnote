@@ -8,7 +8,7 @@ export class JDraw {
     this.jcanvas = null;
     this.mode = null; // draw,clear
     // this.paletteEl = null;
-    this.palette = ["red", "green", "blue"];
+    this.palette = ["white", "red", "green", "blue"];
     this.color = "black";
 
     this._init();
@@ -52,8 +52,12 @@ export class JDraw {
     });
     canvas.addEventListener("touchmove", _draw);
 
+    const controlsEl = document.createElement("div");
+    this.rootEl.appendChild(controlsEl);
+    controlsEl.classList.add("controls");
+
     const paletteEl = document.createElement("div");
-    this.rootEl.appendChild(paletteEl);
+    controlsEl.appendChild(paletteEl);
     paletteEl.classList.add("palette");
     const _updatePalette = () => {
       paletteEl.innerHTML = "";
@@ -70,7 +74,7 @@ export class JDraw {
     };
     _updatePalette();
 
-    this.rootEl.appendChild(
+    controlsEl.appendChild(
       JElementBuilder.addInput(
         (input) => {
           input.classList.add("color");

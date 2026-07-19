@@ -76,7 +76,7 @@ export class JNoteEditor {
     // blockEl.classList.remove('editing');
     // blockEl.classList.add('editing');
 
-    const saveBtn = this.__createBlockBtn("save", () =>
+    const saveBtn = this.__createBlockBtn("save block", () =>
       this._handleSaveBlock(),
     );
     editorContainer.appendChild(saveBtn);
@@ -202,7 +202,7 @@ export class JNoteEditor {
       alert(`Type "${type}" not found`);
       return;
     }
-    const newBlock = { type, content: type !== "img" ? "new block" : null };
+    const newBlock = { type, content: type !== "img" ? "Enter text" : null };
     const newBlocks = [
       ...blocks.slice(0, bi + 1),
       newBlock,

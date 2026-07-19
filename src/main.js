@@ -6,7 +6,7 @@ import { JSpriteEditor } from "./utils/jspriteEditor.js";
 import { JSpriteGallery } from "./utils/jspriteGallery.js";
 
 function main() {
-  const spriteSize = [16, 16];
+  const spriteSize = [32, 32];
   const systemEffects = {
     loggerEffect: (action$, store) =>
       action$.pipe(
@@ -32,10 +32,10 @@ function main() {
   //   type: ACTION_TYPES.BLOCKS_UPDATE,
   //   payload: [{ type: "p", content: "test" }],
   // });
-  spriteGallery.addSprites([
-    { name: "grass", url: "assets/sprites/grass.png" },
-    { name: "npc", url: "assets/sprites/npc.png" },
-  ]);
+  // spriteGallery.addSprites([
+  //   { name: "grass", url: "assets/sprites/grass.png" },
+  //   { name: "npc", url: "assets/sprites/npc.png" },
+  // ]);
 
   // const draw = new JDraw(document.querySelector('.draw'), [32,32]);
 
@@ -94,6 +94,10 @@ function main() {
     const stateStr = localStorage.getItem("fastnote");
     if (!stateStr) {
       alert("no prev state");
+      store.dispatch({ type: ACTION_TYPES.SPRITE_SELECT, payload: null });
+      store.dispatch({ type: ACTION_TYPES.BLOCKS_SELECT, payload: null });
+      store.dispatch({ type: ACTION_TYPES.SPRITES_UPDATE, payload: [] });
+      store.dispatch({ type: ACTION_TYPES.BLOCKS_UPDATE, payload: [] });
       return;
     }
     const state = JSON.parse(stateStr);
@@ -111,6 +115,15 @@ function main() {
   btnLoad.addEventListener("click", () => {
     const conf = confirm("Changes will be lost, ok?");
     if (conf) {
+      loadState();
+    }
+  });
+
+  const btnRemove = document.querySelector(".btn-remove");
+  btnRemove.addEventListener("click", () => {
+    const conf = confirm("Changes will be lost, ok?");
+    if (conf) {
+      localStorage.removeItem("fastnote");
       loadState();
     }
   });
