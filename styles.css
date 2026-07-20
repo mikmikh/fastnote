@@ -131,6 +131,21 @@ canvas {
   caret-color: var(--green);
 }
 
+.block {
+  word-break: break-all;
+}
+
+.modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  min-width: 256px;
+  padding: 1rem;
+  border: 2px solid var(--green);
+  background-color: var(--background-color);
+}
+
 .block button,
 button,
 input[type="file"]::file-selector-button {

@@ -1,5 +1,6 @@
 import * as obslite from "../libs/obslite/index.js";
 import { ACTION_TYPES, selectors } from "../store.js";
+import { JElementBuilder } from "./jelementBuilder.js";
 
 export class JNoteEditor {
   constructor(rootEl, store) {
@@ -62,7 +63,7 @@ export class JNoteEditor {
     editorContainer.classList.add("block__editor");
     if (block.type === "img") {
       editorContainer.textContent = "select sprite from gallery";
-      const imageEditor = document.querySelector('.img-editor');
+      const imageEditor = document.querySelector(".img-editor");
       editorContainer.appendChild(imageEditor);
     } else {
       const textareaEl = document.createElement("textarea");
@@ -92,7 +93,9 @@ export class JNoteEditor {
     const { blocks, blockIdx } = this.store.state;
     // this._createBlock({ type: "empty" }, -1);
     if (!blocks.length) {
-      this.rootEl.appendChild(this.__createBlockBtn('add block', () => this._handleAddBlock(-1)));
+      this.rootEl.appendChild(
+        this.__createBlockBtn("add block", () => this._handleAddBlock(-1)),
+      );
     }
 
     blocks.forEach((block, bi) => {
@@ -115,7 +118,7 @@ export class JNoteEditor {
     );
 
     btns_bottom.appendChild(
-      this.__createBlockBtn("add", () => this._handleAddBlock(bi)),
+      this.__createBlockBtn("add", () => this._handleAddBlock(block)),
     );
 
     btns_top.appendChild(
@@ -195,27 +198,43 @@ export class JNoteEditor {
       payload: [...blocks.slice(0, bi), ...blocks.slice(bi + 1)],
     });
   }
-  _handleAddBlock(bi) {
-    const { blocks } = this.store.state;
-    const type = prompt("Enter type (h1-h6,p,img)", "p");
-    if (!["h1", "h2", "h3", "h4", "h5", "h6", "p", "img"].includes(type)) {
-      alert(`Type "${type}" not found`);
-      return;
-    }
-    const newBlock = { type, content: type !== "img" ? "Enter text" : null };
-    const newBlocks = [
-      ...blocks.slice(0, bi + 1),
-      newBlock,
-      ...blocks.slice(bi + 1),
-    ];
-    this.store.dispatch({
-      type: ACTION_TYPES.BLOCKS_UPDATE,
-      payload: newBlocks,
-    });
-    this.store.dispatch({
-      type: ACTION_TYPES.BLOCKS_SELECT,
-      payload: bi + 1,
-    });
+  _handleAddBlock(block) {
+    const modal = document.querySelector(".block-type-select");
+    modal.classList.remove("hide");
+    modal.innerHTML = "";
+
+    const handleSelect = (type) => {
+      if (type === "cancel") {
+        modal.classList.remove("hide");
+        modal.classList.add("hide");
+        return;
+      }
+      const { blocks } = this.store.state;
+      const newBlock = { type, content: type !== "img" ? "Enter text" : null };
+      const bi = blocks.indexOf(block);
+      const newBlocks = [
+        ...blocks.slice(0, bi + 1),
+        newBlock,
+        ...blocks.slice(bi + 1),
+      ];
+      this.store.dispatch({
+        type: ACTION_TYPES.BLOCKS_UPDATE,
+        payload: newBlocks,
+      });
+      this.store.dispatch({
+        type: ACTION_TYPES.BLOCKS_SELECT,
+        payload: bi + 1,
+      });
+      modal.classList.remove("hide");
+      modal.classList.add("hide");
+    };
+
+    ["h1", "h2", "h3", "h4", "h5", "h6", "p", "img", "cancel"].forEach(
+      (type) => {
+        const btn = JElementBuilder.addButton(type, () => handleSelect(type));
+        modal.appendChild(btn);
+      },
+    );
   }
   _handleMoveBlock(block, offset) {
     const { blocks } = this.store.state;
@@ -269,12 +288,10 @@ export class JNoteEditor {
   }
   _handleRemoveEditor() {
     this._ensureImageEditor();
-    const blockEls = Array.from(
-      this.rootEl.querySelectorAll(".block"),
-    );
-    blockEls.forEach((blockEl)=> {
-      blockEl.classList.remove('editing');
-    })
+    const blockEls = Array.from(this.rootEl.querySelectorAll(".block"));
+    blockEls.forEach((blockEl) => {
+      blockEl.classList.remove("editing");
+    });
     const editorEls = Array.from(
       this.rootEl.querySelectorAll(".block__editor"),
     );
@@ -284,9 +301,9 @@ export class JNoteEditor {
   }
 
   _ensureImageEditor() {
-    const host= document.querySelector('.img-editor-host');
-    if (!host.querySelector('.img-editor')) {
-      const imageEditor = document.querySelector('.img-editor');
+    const host = document.querySelector(".img-editor-host");
+    if (!host.querySelector(".img-editor")) {
+      const imageEditor = document.querySelector(".img-editor");
       if (!imageEditor) {
         return;
       }
